@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>과제 관리 시스템 (Notion Style)</title>
+    <title>취준생 포트폴리오 대시보드 (Notion Style)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -18,16 +18,6 @@
             border-right: none;
         }
 
-        /* 드래그 앤 드롭 상태 스타일 */
-        .task-card.dragging {
-            opacity: 0.5;
-            transform: scale(0.98);
-        }
-        .task-list.drag-over {
-            background-color: #f9fafb;
-            border-radius: 0.375rem;
-        }
-
         /* contenteditable 요소 포커스 시 외곽선 제거 */
         [contenteditable]:focus {
             outline: none;
@@ -38,26 +28,45 @@
             pointer-events: none;
             display: block;
         }
+
+        /* 커스텀 스크롤바 (노션 스타일) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
     </style>
 </head>
 <body class="flex h-screen bg-white text-gray-800 font-sans overflow-hidden">
 
     <aside id="sidebar" class="w-64 bg-[#f7f7f5] border-r border-gray-200 flex flex-col shrink-0">
         <div class="p-3 flex items-center hover:bg-gray-200 cursor-pointer transition-colors m-1 rounded-md">
-            <div class="w-6 h-6 bg-blue-500 rounded text-white flex items-center justify-center text-xs font-bold mr-2">U</div>
-            <span class="font-medium text-sm truncate flex-1">User's Workspace</span>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500"></i>
+            <div class="w-6 h-6 bg-blue-600 rounded text-white flex items-center justify-center text-xs font-bold mr-2">김</div>
+            <span class="font-medium text-sm truncate flex-1">김취준의 워크스페이스</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
         </div>
 
-        <div class="px-2 pb-4">
+        <div class="px-2 pb-4 mt-2">
             <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
                 <i data-lucide="search" class="w-4 h-4 mr-2"></i><span>검색</span>
             </div>
+            <div class="flex items-center justify-between p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
+                <div class="flex items-center">
+                    <i data-lucide="bell" class="w-4 h-4 mr-2"></i><span>알림</span>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-red-500"></span> </div>
+        </div>
+
+        <div class="px-2 mb-4">
+            <div class="text-xs font-semibold text-gray-500 px-2 py-1 mb-1">즐겨찾기</div>
             <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
-                <i data-lucide="clock" class="w-4 h-4 mr-2"></i><span>업데이트</span>
-            </div>
-            <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
-                <i data-lucide="settings" class="w-4 h-4 mr-2"></i><span>설정과 멤버</span>
+                <span class="mr-2">⭐</span><span class="truncate">최종_포트폴리오_v3</span>
             </div>
         </div>
 
@@ -65,123 +74,179 @@
             <div class="text-xs font-semibold text-gray-500 px-2 py-1 mb-1">개인 페이지</div>
             <div class="flex items-center justify-between p-1.5 text-sm bg-gray-200 rounded-md cursor-pointer font-medium">
                 <div class="flex items-center">
-                    <span class="mr-2">📋</span>
-                    <span>과제 관리 시스템</span>
+                    <span class="mr-2">📊</span><span>메인 대시보드</span>
                 </div>
             </div>
             <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer mt-1">
                 <div class="flex items-center">
-                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
-                    <span>주간 회의록</span>
+                    <span class="mr-2">📁</span><span>내 포트폴리오</span>
                 </div>
+            </div>
+            <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer mt-1">
+                <div class="flex items-center">
+                    <span class="mr-2">📝</span><span>과제 및 프로젝트 보관함</span>
+                </div>
+            </div>
+            <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer mt-1">
+                <div class="flex items-center">
+                    <span class="mr-2">✉️</span><span>이력서 / 자기소개서</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-3 border-t border-gray-200">
+            <div class="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
+                <i data-lucide="plus" class="w-4 h-4 mr-2"></i><span>새 페이지 추가</span>
             </div>
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
         
-        <header class="h-12 flex items-center justify-between px-3 shrink-0 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
-            <div class="flex items-center text-gray-500">
+        <header class="h-12 flex items-center justify-between px-3 shrink-0 sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-gray-100">
+            <div class="flex items-center text-gray-500 text-sm">
                 <button id="toggle-sidebar" class="p-1 hover:bg-gray-100 rounded-md mr-2 transition-colors">
                     <i data-lucide="sidebar" class="w-5 h-5"></i>
                 </button>
-                <div class="text-sm font-medium flex items-center">
-                    <span>📋 과제 관리 시스템</span>
+                <div class="flex items-center">
+                    <span class="hover:underline cursor-pointer">김취준의 워크스페이스</span>
+                    <span class="mx-2 text-gray-300">/</span>
+                    <span class="font-medium text-gray-800">📊 메인 대시보드</span>
                 </div>
             </div>
-            <div class="flex items-center text-gray-500 gap-1">
-                <button class="p-1.5 hover:bg-gray-100 rounded-md text-sm">Share</button>
-                <button class="p-1.5 hover:bg-gray-100 rounded-md"><i data-lucide="star" class="w-4 h-4"></i></button>
-                <button class="p-1.5 hover:bg-gray-100 rounded-md"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+            <div class="flex items-center gap-2">
+                <button class="text-xs font-medium bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md transition-colors flex items-center">
+                    <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> 포트폴리오 내보내기
+                </button>
+                <button class="p-1.5 text-gray-500 hover:bg-gray-100 rounded-md"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto px-12 py-8 max-w-5xl mx-auto w-full">
-            <div class="group relative mb-8">
-                <div class="text-6xl mb-4">📋</div>
-                <h1 class="text-4xl font-bold text-gray-800 w-full" contenteditable="true" placeholder="페이지 제목을 입력하세요">과제 관리 시스템 (TMS)</h1>
-                <p class="text-gray-400 mt-2" contenteditable="true" placeholder="설명을 입력하세요">진행 중인 모든 프론트엔드 및 기획 과제를 추적하는 공간입니다.</p>
+        <main class="flex-1 overflow-y-auto px-12 py-10 max-w-5xl mx-auto w-full">
+            
+            <div class="group relative mb-10">
+                <div class="text-6xl mb-4">🚀</div>
+                <h1 class="text-4xl font-bold text-gray-800 w-full mb-3" contenteditable="true">환영합니다, 김취준님!</h1>
+                <p class="text-gray-500 text-lg" contenteditable="true">목표 달성까지 얼마 남지 않았어요. 오늘도 꾸준히 나아가는 당신을 응원합니다.</p>
             </div>
 
-            <div class="flex gap-6 items-start mt-10 overflow-x-auto pb-4">
-                
-                <div class="flex-1 min-w-[280px] task-column" data-status="todo">
-                    <div class="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 rounded-sm bg-red-100 text-red-600 flex items-center justify-center text-[10px] mr-2">할 일</div>
-                            <span>To Do</span>
-                            <span class="ml-2 text-gray-400 font-normal column-count">2</span>
-                        </div>
-                        <div class="flex gap-1">
-                            <i data-lucide="plus" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                            <i data-lucide="more-horizontal" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="task-list flex flex-col gap-2 min-h-[100px] pb-2 transition-colors">
-                        <div class="task-card bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing transition-shadow" draggable="true">
-                            <p class="text-sm font-medium text-gray-800 mb-2">UX 리서치 및 경쟁사 분석</p>
-                            <span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-sm">Design</span>
-                        </div>
-                        <div class="task-card bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing transition-shadow" draggable="true">
-                            <p class="text-sm font-medium text-gray-800 mb-2">디자인 시스템 구축</p>
-                            <span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-sm">UI</span>
-                        </div>
-                    </div>
-                    <button class="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left mt-1">
-                        <i data-lucide="plus" class="w-4 h-4 mr-1"></i> 새로 만들기
-                    </button>
+            <div class="mb-10 bg-[#f7f7f5] p-6 rounded-xl border border-gray-200">
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="font-bold text-gray-800 text-lg flex items-center">
+                        <span class="mr-2">📈</span> 현재 포트폴리오 완성도
+                    </h3>
+                    <span class="text-blue-600 font-bold text-xl">75%</span>
                 </div>
-
-                <div class="flex-1 min-w-[280px] task-column" data-status="in-progress">
-                    <div class="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 rounded-sm bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] mr-2">진행</div>
-                            <span>In Progress</span>
-                            <span class="ml-2 text-gray-400 font-normal column-count">1</span>
-                        </div>
-                        <div class="flex gap-1">
-                            <i data-lucide="plus" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                            <i data-lucide="more-horizontal" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="task-list flex flex-col gap-2 min-h-[100px] pb-2 transition-colors">
-                        <div class="task-card bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing transition-shadow" draggable="true">
-                            <p class="text-sm font-medium text-gray-800 mb-2">메인 대시보드 마크업 구현</p>
-                            <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-sm">Development</span>
-                        </div>
-                    </div>
-                    <button class="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left mt-1">
-                        <i data-lucide="plus" class="w-4 h-4 mr-1"></i> 새로 만들기
-                    </button>
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-4 overflow-hidden">
+                    <div class="bg-blue-500 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 75%"></div>
                 </div>
-
-                <div class="flex-1 min-w-[280px] task-column" data-status="done">
-                    <div class="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 rounded-sm bg-green-100 text-green-600 flex items-center justify-center text-[10px] mr-2">완료</div>
-                            <span>Done</span>
-                            <span class="ml-2 text-gray-400 font-normal column-count">1</span>
-                        </div>
-                        <div class="flex gap-1">
-                            <i data-lucide="plus" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                            <i data-lucide="more-horizontal" class="w-4 h-4 cursor-pointer hover:bg-gray-200 rounded"></i>
-                        </div>
-                    </div>
-                    
-                    <div class="task-list flex flex-col gap-2 min-h-[100px] pb-2 transition-colors">
-                        <div class="task-card bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing transition-shadow line-through text-gray-500 opacity-70" draggable="true">
-                            <p class="text-sm font-medium mb-2">요구사항 명세서 작성</p>
-                            <span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-sm">Planning</span>
-                        </div>
-                    </div>
-                    <button class="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left mt-1">
-                        <i data-lucide="plus" class="w-4 h-4 mr-1"></i> 새로 만들기
-                    </button>
+                <div class="flex items-start text-sm bg-blue-50 text-blue-800 p-3 rounded-md">
+                    <i data-lucide="lightbulb" class="w-4 h-4 mt-0.5 mr-2 shrink-0"></i>
+                    <p><strong>Tip:</strong> '자기소개서' 항목을 업데이트하고 최근 과제 피드백을 반영하면 완성도가 85%로 올라가요! <span class="font-semibold underline cursor-pointer ml-1 hover:text-blue-600">작성하러 가기</span></p>
                 </div>
-
             </div>
+
+            <div class="mb-10">
+                <h3 class="font-bold text-gray-800 text-lg mb-4 flex items-center">
+                    <span class="mr-2">🛠️</span> 핵심 역량 및 기술 스택
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md text-sm font-medium cursor-pointer hover:bg-blue-200 transition-colors">🟦 React (상)</span>
+                    <span class="px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-md text-sm font-medium cursor-pointer hover:bg-yellow-200 transition-colors">🟨 JavaScript (상)</span>
+                    <span class="px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium cursor-pointer hover:bg-indigo-200 transition-colors">🟦 TypeScript (중)</span>
+                    <span class="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-md text-sm font-medium cursor-pointer hover:bg-purple-200 transition-colors">🟪 Figma (상)</span>
+                    <span class="px-3 py-1.5 bg-orange-100 text-orange-700 rounded-md text-sm font-medium cursor-pointer hover:bg-orange-200 transition-colors">🟧 UX 리서치 (중)</span>
+                    <span class="px-3 py-1.5 bg-green-100 text-green-700 rounded-md text-sm font-medium cursor-pointer hover:bg-green-200 transition-colors">🟩 문제해결능력</span>
+                    <button class="px-3 py-1.5 text-gray-500 bg-gray-50 border border-dashed border-gray-300 rounded-md text-sm hover:bg-gray-100 transition-colors flex items-center">
+                        <i data-lucide="plus" class="w-3.5 h-3.5 mr-1"></i> 역량 추가하기
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-gray-800 text-lg flex items-center">
+                        <span class="mr-2">📬</span> 과제 제출 및 피드백 현황
+                    </h3>
+                    <div class="flex gap-1 text-sm bg-gray-100 p-1 rounded-md">
+                        <button class="px-3 py-1 bg-white shadow-sm rounded text-gray-800 font-medium">표 보기</button>
+                        <button class="px-3 py-1 text-gray-500 hover:text-gray-800 rounded">보드 보기</button>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-500">
+                            <tr>
+                                <th class="p-3 font-medium border-r border-gray-200 w-1/4 hover:bg-gray-100 cursor-pointer">🏷️ 과제/프로젝트명</th>
+                                <th class="p-3 font-medium border-r border-gray-200 w-32 hover:bg-gray-100 cursor-pointer">📅 제출일</th>
+                                <th class="p-3 font-medium border-r border-gray-200 w-40 hover:bg-gray-100 cursor-pointer">📌 상태</th>
+                                <th class="p-3 font-medium hover:bg-gray-100 cursor-pointer">💬 피드백 요약 및 평가</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group">
+                                <td class="p-3 font-medium text-gray-800 border-r border-gray-200">A사 프론트엔드 과제</td>
+                                <td class="p-3 text-gray-600 border-r border-gray-200">2026.03.05</td>
+                                <td class="p-3 border-r border-gray-200">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> 완료 (피드백)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-gray-600 flex justify-between items-center">
+                                    <span class="truncate">💡 컴포넌트 분리 우수. 상태 관리 로직 보완 요망.</span>
+                                    <span class="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity font-medium text-xs">상세보기</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group">
+                                <td class="p-3 font-medium text-gray-800 border-r border-gray-200">UX 개선안 기획서</td>
+                                <td class="p-3 text-gray-600 border-r border-gray-200">2026.03.08</td>
+                                <td class="p-3 border-r border-gray-200">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5"></span> 제출 (대기중)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-gray-400 italic">
+                                    (기업 피드백 대기 중입니다)
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group">
+                                <td class="p-3 font-medium text-gray-800 border-r border-gray-200">B사 클론 코딩</td>
+                                <td class="p-3 text-gray-600 border-r border-gray-200">2026.03.12 (예정)</td>
+                                <td class="p-3 border-r border-gray-200">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 mr-1.5"></span> 진행 중 (D-2)
+                                    </span>
+                                </td>
+                                <td class="p-3 text-gray-600">
+                                    진행률 60% - 드래그 앤 드롭 구현 중
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 cursor-pointer transition-colors group">
+                                <td class="p-3 font-medium text-gray-800 border-r border-gray-200">이력서 v1 초안</td>
+                                <td class="p-3 text-gray-600 border-r border-gray-200">2026.02.28</td>
+                                <td class="p-3 border-r border-gray-200">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span> 수정 요망
+                                    </span>
+                                </td>
+                                <td class="p-3 text-gray-600 flex justify-between items-center">
+                                    <span class="truncate">💡 직무 경험을 수치화하여 재작성해 보세요.</span>
+                                    <span class="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity font-medium text-xs">상세보기</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="p-2 border-t border-gray-200 hover:bg-gray-50 cursor-pointer text-gray-400 text-sm">
+                                    <div class="flex items-center pl-1">
+                                        <i data-lucide="plus" class="w-4 h-4 mr-2"></i> 새로 만들기
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -196,76 +261,6 @@
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('closed');
         });
-
-        // 3. 드래그 앤 드롭 로직 구현
-        const taskCards = document.querySelectorAll('.task-card');
-        const taskLists = document.querySelectorAll('.task-list');
-
-        // 카드 수량 업데이트 함수
-        function updateColumnCounts() {
-            document.querySelectorAll('.task-column').forEach(column => {
-                const count = column.querySelectorAll('.task-card').length;
-                column.querySelector('.column-count').innerText = count;
-            });
-        }
-
-        taskCards.forEach(card => {
-            card.addEventListener('dragstart', () => {
-                card.classList.add('dragging');
-            });
-
-            card.addEventListener('dragend', () => {
-                card.classList.remove('dragging');
-                
-                // 완료(Done) 컬럼으로 이동 시 시각적 처리 (취소선, 투명도)
-                const parentColumn = card.closest('.task-column').dataset.status;
-                if(parentColumn === 'done') {
-                    card.classList.add('line-through', 'text-gray-500', 'opacity-70');
-                } else {
-                    card.classList.remove('line-through', 'text-gray-500', 'opacity-70');
-                }
-                updateColumnCounts();
-            });
-        });
-
-        taskLists.forEach(list => {
-            list.addEventListener('dragover', e => {
-                e.preventDefault(); // 드롭 허용
-                list.classList.add('drag-over');
-                
-                const afterElement = getDragAfterElement(list, e.clientY);
-                const draggable = document.querySelector('.dragging');
-                
-                if (afterElement == null) {
-                    list.appendChild(draggable);
-                } else {
-                    list.insertBefore(draggable, afterElement);
-                }
-            });
-
-            list.addEventListener('dragleave', () => {
-                list.classList.remove('drag-over');
-            });
-
-            list.addEventListener('drop', () => {
-                list.classList.remove('drag-over');
-            });
-        });
-
-        // 마우스 Y 좌표에 따라 삽입할 위치의 다음 요소를 찾는 함수
-        function getDragAfterElement(container, y) {
-            const draggableElements = [...container.querySelectorAll('.task-card:not(.dragging)')];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
     </script>
 </body>
 </html>
