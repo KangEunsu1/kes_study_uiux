@@ -1,0 +1,211 @@
+import React, { useState } from 'react';
+import { 
+  ChevronRight, 
+  MoreHorizontal, 
+  Plus, 
+  Search, 
+  Settings, 
+  Sidebar as SidebarIcon, 
+  Star, 
+  Clock, 
+  FileText,
+  CheckCircle2,
+  Circle,
+  MoreVertical
+} from 'lucide-react';
+
+const NotionCloneApp = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Mock Data for Tasks
+  const [tasks, setTasks] = useState({
+    todo: [
+      { id: 1, title: 'UX 리서치 및 경쟁사 분석', tag: 'Design' },
+      { id: 2, title: '디자인 시스템 구축', tag: 'UI' },
+    ],
+    inProgress: [
+      { id: 3, title: '메인 대시보드 프론트엔드 구현', tag: 'Development' },
+    ],
+    done: [
+      { id: 4, title: '요구사항 명세서 작성', tag: 'Planning' },
+    ]
+  });
+
+  return (
+    <div className="flex h-screen bg-white text-gray-800 font-sans">
+      
+      {/* Sidebar */}
+      {isSidebarOpen && (
+        <div className="w-64 bg-[#f7f7f5] border-r border-gray-200 flex flex-col transition-all duration-300">
+          {/* User Profile Area */}
+          <div className="p-3 flex items-center hover:bg-gray-200 cursor-pointer transition-colors m-1 rounded-md">
+            <div className="w-6 h-6 bg-blue-500 rounded text-white flex items-center justify-center text-xs font-bold mr-2">
+              U
+            </div>
+            <span className="font-medium text-sm truncate flex-1">User's Workspace</span>
+            <ChevronRight size={16} className="text-gray-500" />
+          </div>
+
+          {/* Search & Updates */}
+          <div className="px-2 pb-4">
+            <div className="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
+              <Search size={16} className="mr-2" />
+              <span>검색</span>
+            </div>
+            <div className="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
+              <Clock size={16} className="mr-2" />
+              <span>업데이트</span>
+            </div>
+            <div className="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer">
+              <Settings size={16} className="mr-2" />
+              <span>설정과 멤버</span>
+            </div>
+          </div>
+
+          {/* Pages List */}
+          <div className="flex-1 overflow-y-auto px-2">
+            <div className="text-xs font-semibold text-gray-500 px-2 py-1 mb-1">개인 페이지</div>
+            <div className="flex items-center justify-between p-1.5 text-sm bg-gray-200 rounded-md cursor-pointer font-medium">
+              <div className="flex items-center">
+                <span className="mr-2">📋</span>
+                <span>과제 관리 시스템</span>
+              </div>
+            </div>
+            <div className="flex items-center p-1.5 text-sm text-gray-600 hover:bg-gray-200 rounded-md cursor-pointer mt-1">
+              <div className="flex items-center">
+                <FileText size={16} className="mr-2" />
+                <span>주간 회의록</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        
+        {/* Top Navigation */}
+        <header className="h-12 flex items-center justify-between px-3 shrink-0 sticky top-0 bg-white/80 backdrop-blur-sm z-10">
+          <div className="flex items-center text-gray-500">
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-1 hover:bg-gray-100 rounded-md mr-2"
+            >
+              <SidebarIcon size={20} />
+            </button>
+            <div className="text-sm font-medium flex items-center">
+              <span>📋 과제 관리 시스템</span>
+            </div>
+          </div>
+          <div className="flex items-center text-gray-500 gap-1">
+            <button className="p-1.5 hover:bg-gray-100 rounded-md text-sm">Share</button>
+            <button className="p-1.5 hover:bg-gray-100 rounded-md"><Star size={18} /></button>
+            <button className="p-1.5 hover:bg-gray-100 rounded-md"><MoreHorizontal size={18} /></button>
+          </div>
+        </header>
+
+        {/* Editor / Content Area */}
+        <main className="flex-1 overflow-y-auto px-12 py-8 max-w-5xl mx-auto w-full">
+          {/* Page Title (Block) */}
+          <div className="group relative mb-8">
+            <div className="text-6xl mb-4">📋</div>
+            <h1 className="text-4xl font-bold text-gray-800 outline-none w-full" contentEditable suppressContentEditableWarning>
+              과제 관리 시스템 (TMS)
+            </h1>
+            <p className="text-gray-400 mt-2 outline-none" contentEditable suppressContentEditableWarning>
+              진행 중인 모든 프론트엔드 및 기획 과제를 추적하는 공간입니다.
+            </p>
+          </div>
+
+          {/* Kanban Board */}
+          <div className="flex gap-6 items-start mt-10 overflow-x-auto pb-4">
+            
+            {/* Column 1: To Do */}
+            <div className="flex-1 min-w-[280px]">
+              <div className="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 rounded-sm bg-red-100 text-red-600 flex items-center justify-center text-[10px] mr-2">할 일</div>
+                  <span>To Do</span>
+                  <span className="ml-2 text-gray-400 font-normal">{tasks.todo.length}</span>
+                </div>
+                <div className="flex gap-1">
+                  <Plus size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                  <MoreHorizontal size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                {tasks.todo.map(task => (
+                  <div key={task.id} className="bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab transition-shadow group">
+                    <p className="text-sm font-medium text-gray-800 mb-2">{task.title}</p>
+                    <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-sm">{task.tag}</span>
+                  </div>
+                ))}
+                <button className="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left">
+                  <Plus size={16} className="mr-1" /> 새로 만들기
+                </button>
+              </div>
+            </div>
+
+            {/* Column 2: In Progress */}
+            <div className="flex-1 min-w-[280px]">
+              <div className="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 rounded-sm bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] mr-2">진행</div>
+                  <span>In Progress</span>
+                  <span className="ml-2 text-gray-400 font-normal">{tasks.inProgress.length}</span>
+                </div>
+                <div className="flex gap-1">
+                  <Plus size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                  <MoreHorizontal size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                {tasks.inProgress.map(task => (
+                  <div key={task.id} className="bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab transition-shadow group">
+                    <p className="text-sm font-medium text-gray-800 mb-2">{task.title}</p>
+                    <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-sm">{task.tag}</span>
+                  </div>
+                ))}
+                <button className="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left">
+                  <Plus size={16} className="mr-1" /> 새로 만들기
+                </button>
+              </div>
+            </div>
+
+            {/* Column 3: Done */}
+            <div className="flex-1 min-w-[280px]">
+              <div className="flex items-center justify-between mb-3 text-sm font-medium text-gray-600">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 rounded-sm bg-green-100 text-green-600 flex items-center justify-center text-[10px] mr-2">완료</div>
+                  <span>Done</span>
+                  <span className="ml-2 text-gray-400 font-normal">{tasks.done.length}</span>
+                </div>
+                <div className="flex gap-1">
+                  <Plus size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                  <MoreHorizontal size={16} className="cursor-pointer hover:bg-gray-200 rounded" />
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                {tasks.done.map(task => (
+                  <div key={task.id} className="bg-white border border-gray-200 p-3 rounded-md shadow-sm hover:shadow-md cursor-grab transition-shadow group line-through text-gray-500 opacity-70">
+                    <p className="text-sm font-medium mb-2">{task.title}</p>
+                    <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-sm">{task.tag}</span>
+                  </div>
+                ))}
+                <button className="flex items-center text-sm text-gray-400 hover:bg-gray-100 p-2 rounded-md transition-colors w-full text-left">
+                  <Plus size={16} className="mr-1" /> 새로 만들기
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default NotionCloneApp;
